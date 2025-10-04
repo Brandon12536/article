@@ -1,0 +1,68 @@
+# Configuración Jekyll para GitHub Pages
+title: "DevOps LATAM: Integración y Entrega Continua"
+description: "La guía más completa de DevOps en español con perspectiva latinoamericana"
+author: "Brandon Pérez Reyes"
+email: "brandon@devops-latam.com"
+baseurl: "/devops-latam-article"
+url: "https://brandon12536.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO settings
+lang: es
+twitter:
+  username: brandon_devops
+  card: summary_large_image
+
+social:
+  name: Brandon Pérez Reyes
+  links:
+    - https://github.com/Brandon12536
+    - https://linkedin.com/in/brandon-perez-reyes-667634264
+    - https://twitter.com/brandon_devops
+
+# Google Analytics (opcional)
+# google_analytics: G-XXXXXXXXXX
+
+# Collections
+collections:
+  sections:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Brandon Pérez Reyes"
+  - scope:
+      path: ""
+      type: "sections"
+    values:
+      layout: "section"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - latex/
+  - "*.tex"
+  - "*.aux"
+  - "*.log"
