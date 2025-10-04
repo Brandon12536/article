@@ -103,6 +103,14 @@ pdflatex Article.tex
 - **[Guía GitHub Pages](Markdown/GITHUB_PUBLICATION_GUIDE.md)** - Publicación paso a paso en GitHub Pages
 - **[Guía Netlify](Markdown/NETLIFY_DEPLOYMENT_GUIDE.md)** - Deploy rápido y profesional en Netlify  
 - **[Estructura del Proyecto](Markdown/github-structure.md)** - Organización de archivos y directorios
+- **[Mejoras Profesionales](Markdown/PROFESSIONAL_IMPROVEMENTS.md)** - Recomendaciones para aumentar credibilidad
+
+### 💻 Ejemplos de Código Production-Ready
+- **[Repositorio de Ejemplos](examples/README.md)** - Código funcional referenciado en el artículo
+- **[Docker Multi-Stage](examples/docker/)** - Dockerfiles optimizados con reducción 80% tamaño
+- **[Kubernetes](examples/kubernetes/)** - Manifiestos production-ready con security contexts
+- **[Terraform](examples/terraform/)** - AWS EKS cluster completo con VPC y node groups
+- **[Jenkins](examples/jenkins/)** - Pipeline CI/CD avanzado con tests y deploy automático
 
 ### 🚀 Opciones de Hosting
 1. **GitHub Pages** - Gratuito, integrado con Git, ideal para desarrolladores
@@ -137,13 +145,26 @@ pdflatex Article.tex
 devops-latam-article/
 ├── Article.tex                 # Código fuente LaTeX principal
 ├── DevOps_Article.pdf         # Documento final compilado
-├── index.html                 # Landing page web
-├── _config.yml               # Configuración Jekyll/GitHub Pages
+├── index.html                 # Landing page web profesional
+├── netlify.toml               # Configuración Netlify
 ├── README.md                 # Este archivo
-└── Markdown/                 # Documentación adicional
-    ├── GITHUB_PUBLICATION_GUIDE.md    # Guía GitHub Pages
-    ├── NETLIFY_DEPLOYMENT_GUIDE.md    # Guía Netlify
-    └── github-structure.md            # Estructura del repositorio
+├── Markdown/                 # Documentación adicional
+│   ├── GITHUB_PUBLICATION_GUIDE.md    # Guía GitHub Pages
+│   ├── NETLIFY_DEPLOYMENT_GUIDE.md    # Guía Netlify
+│   ├── github-structure.md            # Estructura del repositorio
+│   └── PROFESSIONAL_IMPROVEMENTS.md   # Mejoras de credibilidad
+└── examples/                 # Código production-ready
+    ├── README.md             # Documentación de ejemplos
+    ├── docker/               # Dockerfiles optimizados
+    │   └── Dockerfile.multi-stage
+    ├── kubernetes/           # Manifiestos K8s
+    │   └── deployment.yaml
+    ├── terraform/            # Infrastructure as Code
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    └── jenkins/              # CI/CD Pipelines
+        └── Jenkinsfile
 ```
 
 ## 🚀 Próximos Pasos
