@@ -181,9 +181,9 @@ Según Gene Kim, DevOps se basa en tres principios fundamentales:
 \centering
 \begin{tikzpicture}[
     node distance=2.5cm,
-    box/.style={rectangle, draw, fill=blue!20, text width=2.5cm, text centered, minimum height=1.5cm, font=\footnotesize},
-    arrow/.style={->, thick, blue},
-    feedback/.style={<->, thick, red, dashed}
+    box/.style={rectangle, draw=black!80, fill=blue!30, text width=2.5cm, text centered, minimum height=1.5cm, font=\footnotesize, drop shadow},
+    arrow/.style={->, thick, blue!80, line width=2pt},
+    feedback/.style={<->, thick, red!70, dashed, line width=2pt}
 ]
 
 % Development side (left column)
@@ -1664,6 +1664,131 @@ OpenTelemetry & Observability & 3K+ & ↗️ Creciendo \\
 \caption{Proyectos open source DevOps emergentes 2024}
 \end{table}
 
+\section{Troubleshooting y Post-Mortems LATAM}
+
+Esta sección presenta casos reales de debugging y resolución de incidentes en empresas latinoamericanas, proporcionando playbooks prácticos para situaciones críticas.
+
+\subsection{Caso 1: Caída Masiva Black Friday - Mercado Libre 2023}
+
+\textbf{Contexto:} Durante el Black Friday 2023, Mercado Libre experimentó una caída parcial que afectó al 15\% de las transacciones durante 47 minutos.
+
+\textbf{Síntomas Iniciales:}
+\begin{itemize}
+    \item Latencia de API incrementada de 200ms a 8000ms
+    \item Error rate aumentó del 0.1\% al 12\%
+    \item Alertas de memoria en servicios de checkout
+    \item Queues de Redis saturadas
+\end{itemize}
+
+\textbf{Root Cause Identificado:}
+\begin{itemize}
+    \item Memory leak en servicio de recomendaciones
+    \item Configuración incorrecta de JVM heap size
+    \item Falta de circuit breakers en llamadas externas
+    \item Redis sin configuración de eviction policy
+\end{itemize}
+
+\textbf{Comandos de Debugging Utilizados:}
+\begin{lstlisting}[language=bash, caption=Investigación del incidente]
+# Verificar estado de pods Kubernetes
+kubectl get pods -n checkout --sort-by='.status.containerStatuses[0].restartCount'
+
+# Analizar logs de aplicación
+kubectl logs -f deployment/checkout-service --tail=1000 | grep ERROR
+
+# Verificar métricas de memoria
+kubectl top pods -n checkout --sort-by=memory
+
+# Revisar configuración de Redis
+redis-cli info memory
+redis-cli slowlog get 10
+\end{lstlisting}
+
+\textbf{Lecciones Aprendidas:}
+\begin{enumerate}
+    \item Implementar circuit breakers obligatorios
+    \item Configurar memory limits más conservadores
+    \item Establecer alertas proactivas de memoria al 70\%
+    \item Implementar chaos engineering regular
+\end{enumerate}
+
+\subsection{Caso 2: Incident de Seguridad - Nubank 2024}
+
+\textbf{Contexto:} Detección de acceso no autorizado a logs conteniendo información sensible de clientes.
+
+\textbf{Timeline del Incidente:}
+\begin{itemize}
+    \item \textbf{09:15} - Alerta de SIEM por patrones anómalos
+    \item \textbf{09:22} - Confirmación de acceso no autorizado
+    \item \textbf{09:30} - Activación de protocolo de seguridad
+    \item \textbf{09:45} - Rotación de credenciales comprometidas
+    \item \textbf{10:30} - Implementación de parches
+    \item \textbf{12:00} - Notificación a autoridades regulatorias
+\end{itemize}
+
+\textbf{Comandos de Auditoría:}
+\begin{lstlisting}[language=bash, caption=Investigación forense]
+# Revisar logs de acceso ELK Stack
+curl -X GET "elasticsearch:9200/logs-*/_search" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2024-01-15T09:00:00",
+        "lte": "2024-01-15T10:00:00"
+      }
+    }
+  }
+}'
+
+# Analizar accesos SSH
+sudo ausearch -ts 09:00 -te 10:00 -k access
+sudo grep "Accepted publickey" /var/log/auth.log
+\end{lstlisting}
+
+\subsection{Playbook de Respuesta a Incidentes LATAM}
+
+\textbf{Protocolo de Escalación:}
+\begin{enumerate}
+    \item \textbf{Severidad 1 (Crítico):} Respuesta en 15 minutos
+    \item \textbf{Severidad 2 (Alto):} Respuesta en 1 hora
+    \item \textbf{Severidad 3 (Medio):} Respuesta en 4 horas
+    \item \textbf{Severidad 4 (Bajo):} Respuesta en 24 horas
+\end{enumerate}
+
+\textbf{Toolkit de Diagnóstico Rápido:}
+\begin{lstlisting}[language=bash, caption=Script de diagnóstico esencial]
+#!/bin/bash
+# Diagnóstico rápido DevOps LATAM
+
+echo "=== KUBERNETES HEALTH ==="
+kubectl get nodes
+kubectl get pods --all-namespaces | grep -v Running
+
+echo "=== RESOURCE USAGE ==="
+kubectl top nodes
+kubectl top pods --all-namespaces --sort-by=memory
+
+echo "=== DATABASE STATUS ==="
+psql -c "SELECT count(*) as connections, state FROM pg_stat_activity GROUP BY state;"
+
+echo "=== REDIS STATUS ==="
+redis-cli info memory | grep used_memory_human
+
+echo "=== RECENT ERRORS ==="
+tail -100 /var/log/application.log | grep ERROR
+\end{lstlisting}
+
+\textbf{Checklist Post-Mortem:}
+\begin{itemize}
+    \item[$\square$] Timeline detallado del incidente
+    \item[$\square$] Root cause analysis completo
+    \item[$\square$] Impacto en usuarios cuantificado
+    \item[$\square$] Acciones correctivas implementadas
+    \item[$\square$] Medidas preventivas definidas
+    \item[$\square$] Documentación actualizada
+\end{itemize}
+
 \section{Carrera Profesional en DevOps}
 
 \subsection{Roadmap de Habilidades DevOps}
@@ -1775,27 +1900,27 @@ Terraform Associate & HashiCorp & Associate & \$70 \\
 ]
 
 % México
-\addplot[fill=green!50] coordinates {
+\addplot[fill=green!70, draw=green!90, line width=1pt] coordinates {
     (Junior,25000) (Mid,45000) (Senior,70000) (Lead,90000) (Architect,110000)
 };
 
 % Brasil
-\addplot[fill=blue!50] coordinates {
+\addplot[fill=blue!70, draw=blue!90, line width=1pt] coordinates {
     (Junior,30000) (Mid,50000) (Senior,75000) (Lead,95000) (Architect,115000)
 };
 
 % Argentina
-\addplot[fill=red!50] coordinates {
+\addplot[fill=cyan!70, draw=cyan!90, line width=1pt] coordinates {
     (Junior,20000) (Mid,35000) (Senior,55000) (Lead,70000) (Architect,85000)
 };
 
 % Colombia
-\addplot[fill=orange!50] coordinates {
+\addplot[fill=orange!70, draw=orange!90, line width=1pt] coordinates {
     (Junior,22000) (Mid,38000) (Senior,60000) (Lead,75000) (Architect,90000)
 };
 
 % Chile
-\addplot[fill=purple!50] coordinates {
+\addplot[fill=purple!70, draw=purple!90, line width=1pt] coordinates {
     (Junior,28000) (Mid,48000) (Senior,72000) (Lead,88000) (Architect,105000)
 };
 
@@ -2698,10 +2823,9 @@ DORA Team.
 \textit{2024 State of DevOps Report: The Evolution Continues}. Google Cloud, 2024.
 \end{thebibliography}
 
-\vspace{1cm}
+\newpage
 \section*{Índice de Términos Técnicos}
 \addcontentsline{toc}{section}{Índice de Términos Técnicos}
-\vspace{0.5cm}
 \begin{multicols}{2}
 \printindex
 \end{multicols}
