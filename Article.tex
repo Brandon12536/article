@@ -22,6 +22,7 @@
 \usepackage{pgfplotstable}
 \usepackage{makeidx}
 \usepackage{multicol}
+\usepackage{float}
 \usetikzlibrary{shapes,arrows,positioning,fit,backgrounds}
 \pgfplotsset{compat=1.18}
 
@@ -1751,7 +1752,7 @@ Terraform Associate & HashiCorp & Associate & \$70 \\
 \end{table}
 
 \subsection{Salarios por Región LATAM (2024)}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1759,15 +1760,18 @@ Terraform Associate & HashiCorp & Associate & \$70 \\
     xlabel={Nivel de Experiencia},
     ylabel={Salario Anual (USD)},
     ybar,
-    bar width=15pt,
-    width=14cm,
-    height=8cm,
+    bar width=12pt,
+    width=15cm,
+    height=9cm,
     ymin=0,
-    ymax=120000,
+    ymax=130000,
     symbolic x coords={Junior,Mid,Senior,Lead,Architect},
     xtick=data,
+    x tick label style={font=\small},
     legend pos=north west,
-    legend entries={México,Brasil,Argentina,Colombia,Chile}
+    legend style={font=\footnotesize},
+    legend entries={México,Brasil,Argentina,Colombia,Chile},
+    enlarge x limits=0.1
 ]
 
 % México
@@ -1799,6 +1803,8 @@ Terraform Associate & HashiCorp & Associate & \$70 \\
 \end{tikzpicture}
 \caption{Comparativa salarial DevOps en principales mercados LATAM}
 \end{figure}
+
+\vspace{1cm}
 
 \subsection{Habilidades Más Demandadas 2024}
 \begin{itemize}
@@ -2092,13 +2098,13 @@ GitOps representa la evolución natural de Continuous Deployment:
 ArgoCD es la herramienta líder para GitOps en Kubernetes:
 
 \subsubsection{Arquitectura ArgoCD}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}[
-    node distance=1.5cm,
-    repo/.style={rectangle, draw, fill=green!20, text width=2cm, text centered, minimum height=1cm, font=\footnotesize},
-    argo/.style={rectangle, draw, fill=blue!20, text width=2.5cm, text centered, minimum height=1cm, font=\footnotesize},
-    k8s/.style={rectangle, draw, fill=orange!20, text width=2cm, text centered, minimum height=1cm, font=\footnotesize},
+    node distance=1.8cm,
+    repo/.style={rectangle, draw, fill=green!20, text width=2.2cm, text centered, minimum height=1.2cm, font=\footnotesize},
+    argo/.style={rectangle, draw, fill=blue!20, text width=2.5cm, text centered, minimum height=1.2cm, font=\footnotesize},
+    k8s/.style={rectangle, draw, fill=orange!20, text width=2.2cm, text centered, minimum height=1.2cm, font=\footnotesize},
     arrow/.style={->, thick, blue}
 ]
 
@@ -2134,6 +2140,8 @@ ArgoCD es la herramienta líder para GitOps en Kubernetes:
 \end{tikzpicture}
 \caption{Arquitectura ArgoCD para GitOps en Kubernetes}
 \end{figure}
+
+\newpage
 
 \subsubsection{Configuración ArgoCD}
 Ejemplo de Application manifest para ArgoCD:
