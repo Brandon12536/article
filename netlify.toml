@@ -2,7 +2,7 @@
   # No build command needed for static HTML
   command = ""
   # Publish the root directory
-  publish = "."
+  publish = ""
 
 # Redirect rules for better SEO
 [[redirects]]
